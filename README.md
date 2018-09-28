@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/modoolar/vault.svg?branch=11.0)](https://travis-ci.com/modoolar/vault)
+[![codecov](https://codecov.io/gh/modoolar/vault/branch/11.0/graph/badge.svg)](https://codecov.io/gh/modoolar/vault)
+
 Repository for Vault related modules.
 ========================================
 

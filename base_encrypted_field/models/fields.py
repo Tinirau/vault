@@ -89,7 +89,7 @@ def _inverse_encrypt(self, records):
         else:
             if self.name in values:
                 values.pop(self.name)
-                record[self.encrypt] = value
+                record[self.encrypt] = values
 
 
 #

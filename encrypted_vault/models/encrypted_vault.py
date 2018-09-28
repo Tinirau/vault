@@ -1,11 +1,11 @@
 # Copyright 2017 - 2018 Modoolar <info@modoolar.com>
 # License LGPLv3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html).
 
-from odoo import models, fields, api
 import logging
-from string import digits, ascii_letters
 from random import choice
 from ast import literal_eval
+from string import digits, ascii_letters
+from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
 try:
@@ -22,9 +22,9 @@ class EncryptedVault(models.Model):
     _name = 'encrypted.vault'
 
     @api.model
-    def random_password(self, length=False):
+    def random_password(self, pass_len=False):
         get_param = self.env['ir.config_parameter'].sudo().get_param
-        length = length if length else literal_eval(get_param(
+        pass_len = pass_len if pass_len else literal_eval(get_param(
             'encrypted_vault.encrypted_vault_password_length'))
         characters = ""
         use_digits = literal_eval(
@@ -39,22 +39,19 @@ class EncryptedVault(models.Model):
             characters += "!@#$%^&*()="
         if use_letters:
             characters += ascii_letters
-        if len(characters) == 0:
+        if not characters:
             characters += ascii_letters + digits
-        password = ''.join(choice(characters) for x in range(length))
+        password = ''.join(choice(characters) for x in range(pass_len))
         return password
 
     encrypted_data = fields.Encrypted()
     name = fields.Char(
-        string="Name",
         required=True,
     )
     username = fields.Char(
-        string="Username",
         required=False,
     )
     password = fields.Char(
-        string="Password",
         required=False,
         encrypt="encrypted_data",
         default=random_password
@@ -64,7 +61,6 @@ class EncryptedVault(models.Model):
         required=False,
     )
     notes = fields.Text(
-        string="Notes",
         encrypt="encrypted_data",
     )
 
@@ -84,7 +80,6 @@ class EncryptedVault(models.Model):
     )
 
     history_count = fields.Integer(
-        string='History Count',
         compute='_compute_history_count',
     )
     custom_field_ids = fields.One2many(
@@ -125,4 +120,4 @@ class EncryptedVault(models.Model):
     @api.multi
     def random_password_button(self):
         self.ensure_one()
-        self.passowrd = self.random_password()
+        self.password = self.random_password()

@@ -2,10 +2,10 @@
 # License LGPLv3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html).
 
 from odoo.tests import common
-from odoo.tools import config
 from cryptography.fernet import Fernet
 
-encryption_key = config['encryption_key'].encode("utf-8")
+from ..models.fields import encryption_key
+
 fernet = Fernet(encryption_key)
 
 
@@ -30,9 +30,9 @@ class TestSparseFields(common.TransactionCase):
         ]
         for n, (key, val) in enumerate(values[:-1]):
             record.write({key: val})
-            self.assertEqual(record.encrypted, dict(values[:n+1]))
+            self.assertEqual(record.encrypted, dict(values[:n + 1]))
         record.write(dict([values[-1]]))
-        self.assertEqual(record.encrypted_password, dict(values[-1]))
+        self.assertEqual(record.encrypted_password, dict([values[-1]]))
 
         for key, val in values[:-2]:
             self.assertEqual(record[key], val)
@@ -40,9 +40,9 @@ class TestSparseFields(common.TransactionCase):
 
         for n, (key, val) in enumerate(values[:-1]):
             record.write({key: False})
-            self.assertEqual(record.encrypted, dict(values[n+1:]))
-        record.write(values[-1][0], False)
-        self.assertEqual(record.encrypted_password, False)
+            self.assertEqual(record.encrypted, dict(values[:-1][n + 1:]))
+        record.write({values[-1][0]: False})
+        self.assertEqual(record.encrypted_password, {})
 
         # check reflection of encrypt fields in 'ir.model.fields'
         names = [name for name, _ in values[:-1]]
@@ -53,4 +53,8 @@ class TestSparseFields(common.TransactionCase):
         fields = self.env['ir.model.fields'].search(domain)
         self.assertEqual(len(fields), len(names))
         for field in fields:
-            self.assertEqual(field.serialization_field_id.name, 'encrypted')
+            if "serialization_field_id" in field:
+                self.assertEqual(
+                    field.serialization_field_id.name,
+                    'encrypted'
+                )

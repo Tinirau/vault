@@ -21,7 +21,6 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/encrypted_vault_data.xml',
-        'views/assets.xml',
         'views/encrypted_vault_history_view.xml',
         'views/encrypted_vault_view.xml',
         'views/encrypted_vault_custom_field_view.xml',
