@@ -16,7 +16,7 @@
                             <div class="o_setting_right_pane">
                                 <div class="content-group">
                                     <div class="row mt16">
-                                        <label class="col-md-4" string="Password length"
+                                        <label for="arch" class="col-md-4" string="Password length"
                                                for="encrypted_vault_password_length"/>
                                         <field name="encrypted_vault_password_length" class="oe_inline col-md-3"/>
                                     </div>

@@ -4,7 +4,7 @@
     'name': "Encrypted Fields",
     'summary': """Implementation of encrypted fields.""",
     'category': 'Technical Settings',
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "license": "LGPL-3",
     "author": "Modoolar",
     "website": "https://www.modoolar.com/",
